@@ -1,5 +1,7 @@
 .claude/
 .DS_Store
+CLAUDE.md
+TODO.md
 
 # .NET
 **/bin/
