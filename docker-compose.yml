@@ -1,0 +1,7 @@
+services:
+  soul-cores:
+    build: .
+    container_name: tibia-soul-cores
+    ports:
+      - "8090:80"
+    restart: unless-stopped
