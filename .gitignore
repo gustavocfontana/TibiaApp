@@ -1,2 +1,8 @@
 .claude/
 .DS_Store
+
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo

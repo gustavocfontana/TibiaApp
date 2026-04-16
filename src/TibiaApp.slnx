@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TibiaApp.API/TibiaApp.API.csproj" />
+  <Project Path="TibiaApp.Application/TibiaApp.Application.csproj" />
+  <Project Path="TibiaApp.Domain/TibiaApp.Domain.csproj" />
+  <Project Path="TibiaApp.Infrastructure/TibiaApp.Infrastructure.csproj" />
+</Solution>

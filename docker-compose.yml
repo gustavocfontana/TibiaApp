@@ -1,7 +1,45 @@
 services:
-  soul-cores:
-    build: .
-    container_name: tibia-soul-cores
+  tibiaapp-db:
+    image: postgres:16-alpine
+    container_name: tibiaapp-db
+    environment:
+      POSTGRES_DB: tibiaapp
+      POSTGRES_USER: tibiaapp
+      POSTGRES_PASSWORD: tibiaapp
+    volumes:
+      - tibiaapp_db_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tibiaapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  tibiaapp-api:
+    build:
+      context: ./src
+      dockerfile: TibiaApp.API/Dockerfile
+    container_name: tibiaapp-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Host=tibiaapp-db;Port=5432;Database=tibiaapp;Username=tibiaapp;Password=tibiaapp"
+    ports:
+      - "5002:8080"
+    depends_on:
+      tibiaapp-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  tibiaapp-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tibiaapp-client
     ports:
       - "8090:80"
     restart: unless-stopped
+
+volumes:
+  tibiaapp_db_data:
