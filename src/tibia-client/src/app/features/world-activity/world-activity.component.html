@@ -1,0 +1,89 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <a class="back-link" routerLink="/worlds" title="Voltar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+        </svg>
+      </a>
+      <h2>{{ world }}</h2>
+      @if (data()) {
+        <span class="badge">Ultimas 24h</span>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" type="button" (click)="load()" title="Recarregar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  @if (data()) {
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-label">Monstros mortos</span>
+        <span class="stat-value">{{ totalKills() }}</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Players mortos</span>
+        <span class="stat-value">{{ totalPlayersKilled() }}</span>
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <div class="search-wrapper">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input class="search-input" type="text" placeholder="Buscar raca..."
+               [value]="search()" (input)="onSearchInput($event)" />
+      </div>
+      <div class="filter-group">
+        <button class="filter-btn" [class.active]="sortKey() === 'lastDayKilled'"
+                type="button" (click)="sortKey.set('lastDayKilled')">Mortes 24h</button>
+        <button class="filter-btn" [class.active]="sortKey() === 'lastDayPlayersKilled'"
+                type="button" (click)="sortKey.set('lastDayPlayersKilled')">Mata players</button>
+        <button class="filter-btn" [class.active]="sortKey() === 'lastWeekKilled'"
+                type="button" (click)="sortKey.set('lastWeekKilled')">Semana</button>
+        <button class="filter-btn" [class.active]="sortKey() === 'race'"
+                type="button" (click)="sortKey.set('race')">A-Z</button>
+      </div>
+    </div>
+  }
+</section>
+
+<section class="content-area">
+  @if (loading()) {
+    <app-loading message="Carregando atividade..." />
+  } @else if (error(); as err) {
+    <app-error-state [message]="err" (retry)="load()" />
+  } @else {
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Raca</th>
+            <th class="num">Mortes 24h</th>
+            <th class="num">Mata players 24h</th>
+            <th class="num">Mortes semana</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of filtered(); track e.race) {
+            <tr>
+              <td>{{ e.race }}</td>
+              <td class="num">{{ e.lastDayKilled }}</td>
+              <td class="num">{{ e.lastDayPlayersKilled }}</td>
+              <td class="num">{{ e.lastWeekKilled }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="4" class="no-results">Sem dados.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
