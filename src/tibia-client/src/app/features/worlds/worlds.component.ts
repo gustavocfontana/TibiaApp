@@ -1,6 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { WorldsService } from './worlds.service';
 import { WorldsResponse } from './worlds.models';
+import { RouterLink } from '@angular/router';
 import { LoadingComponent } from '../../core/ui/loading.component';
 import { ErrorStateComponent } from '../../core/ui/error-state.component';
 
@@ -9,7 +10,7 @@ type PvpFilter = 'all' | 'open' | 'optional' | 'hardcore' | 'retro-open' | 'retr
 @Component({
   selector: 'app-worlds',
   standalone: true,
-  imports: [LoadingComponent, ErrorStateComponent],
+  imports: [RouterLink, LoadingComponent, ErrorStateComponent],
   templateUrl: './worlds.component.html'
 })
 export class WorldsComponent {

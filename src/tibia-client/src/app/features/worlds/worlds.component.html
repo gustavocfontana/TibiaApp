@@ -49,7 +49,7 @@
   } @else {
     <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
       @for (w of filtered(); track w.name) {
-        <div class="world-card">
+        <a class="world-card" [routerLink]="['/worlds', w.name]" title="Ver atividade de {{ w.name }}">
           <div class="world-header">
             <span class="world-name">{{ w.name }}</span>
             <span class="status-dot" [class.online]="w.status === 'online'" [class.offline]="w.status !== 'online'"></span>
@@ -74,7 +74,7 @@
               </div>
             }
           </div>
-        </div>
+        </a>
       } @empty {
         <div class="no-results"><p>Nenhum world encontrado.</p></div>
       }

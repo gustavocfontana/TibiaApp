@@ -1,0 +1,147 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <h2>Calculator</h2>
+      <span class="badge">Skills / Exp / ML</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="tab() === 'experience'" type="button" (click)="setTab('experience')">Experience</button>
+    <button class="tab-btn" [class.active]="tab() === 'skills'" type="button" (click)="setTab('skills')">Skills</button>
+    <button class="tab-btn" [class.active]="tab() === 'magic'" type="button" (click)="setTab('magic')">Magic Level</button>
+  </div>
+</section>
+
+<section class="content-area">
+  @if (tab() === 'experience') {
+    <div class="calc-grid">
+      <div class="calc-card">
+        <h3 class="calc-title">Parametros</h3>
+        <label class="calc-field">
+          <span>Level atual</span>
+          <input type="number" min="1" [value]="expFrom()" (input)="onNumber(expFrom.set, $event, 1)" />
+        </label>
+        <label class="calc-field">
+          <span>Level alvo</span>
+          <input type="number" min="1" [value]="expTo()" (input)="onNumber(expTo.set, $event, 1)" />
+        </label>
+        <label class="calc-field">
+          <span>Exp / hora</span>
+          <input type="number" min="0" step="10000" [value]="expPerHour()" (input)="onNumber(expPerHour.set, $event)" />
+        </label>
+      </div>
+
+      <div class="calc-card highlight">
+        <h3 class="calc-title">Resultado</h3>
+        <div class="metric big">
+          <span class="metric-label">Experiencia necessaria</span>
+          <span class="metric-value">{{ formatNumber(expNeeded()) }}</span>
+        </div>
+        <div class="metric-row">
+          <div class="metric">
+            <span class="metric-label">Tempo estimado</span>
+            <span class="metric-value">{{ formatHours(expHours()) }}</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Exp no level atual</span>
+            <span class="metric-value">{{ formatNumber(expAtFrom()) }}</span>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Exp no level alvo</span>
+            <span class="metric-value">{{ formatNumber(expAtTo()) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (tab() === 'skills') {
+    <div class="calc-grid">
+      <div class="calc-card">
+        <h3 class="calc-title">Parametros</h3>
+        <label class="calc-field">
+          <span>Vocacao</span>
+          <select [value]="skillVocation()" (change)="onVocation(skillVocation.set, $event)">
+            @for (v of vocations; track v.value) { <option [value]="v.value">{{ v.label }}</option> }
+          </select>
+        </label>
+        <label class="calc-field">
+          <span>Skill</span>
+          <select [value]="skillKind()" (change)="onSkillKind($event)">
+            @for (s of skills; track s.value) { <option [value]="s.value">{{ s.label }}</option> }
+          </select>
+        </label>
+        <label class="calc-field">
+          <span>Skill atual</span>
+          <input type="number" min="10" [value]="skillFrom()" (input)="onNumber(skillFrom.set, $event, 10)" />
+        </label>
+        <label class="calc-field">
+          <span>Skill alvo</span>
+          <input type="number" min="10" [value]="skillTo()" (input)="onNumber(skillTo.set, $event, 10)" />
+        </label>
+        <label class="calc-field">
+          <span>Loyalty bonus (%)</span>
+          <input type="number" min="0" max="50" [value]="skillLoyalty()" (input)="onNumber(skillLoyalty.set, $event)" />
+        </label>
+      </div>
+
+      <div class="calc-card highlight">
+        <h3 class="calc-title">Resultado</h3>
+        <div class="metric big">
+          <span class="metric-label">Hits necessarios</span>
+          <span class="metric-value">{{ formatNumber(skillHits()) }}</span>
+        </div>
+        <p class="calc-note">
+          Cada hit conta como 1 tentativa. Valores baseados nas formulas conhecidas da comunidade —
+          pode haver pequena variacao in-game devido a arredondamentos.
+        </p>
+      </div>
+    </div>
+  }
+
+  @if (tab() === 'magic') {
+    <div class="calc-grid">
+      <div class="calc-card">
+        <h3 class="calc-title">Parametros</h3>
+        <label class="calc-field">
+          <span>Vocacao</span>
+          <select [value]="mlVocation()" (change)="onVocation(mlVocation.set, $event)">
+            @for (v of vocations; track v.value) { <option [value]="v.value">{{ v.label }}</option> }
+          </select>
+        </label>
+        <label class="calc-field">
+          <span>Magic Level atual</span>
+          <input type="number" min="0" [value]="mlFrom()" (input)="onNumber(mlFrom.set, $event)" />
+        </label>
+        <label class="calc-field">
+          <span>Magic Level alvo</span>
+          <input type="number" min="0" [value]="mlTo()" (input)="onNumber(mlTo.set, $event)" />
+        </label>
+        <label class="calc-field">
+          <span>Loyalty bonus (%)</span>
+          <input type="number" min="0" max="50" [value]="mlLoyalty()" (input)="onNumber(mlLoyalty.set, $event)" />
+        </label>
+      </div>
+
+      <div class="calc-card highlight">
+        <h3 class="calc-title">Resultado</h3>
+        <div class="metric big">
+          <span class="metric-label">Mana total necessaria</span>
+          <span class="metric-value">{{ formatNumber(manaTotal()) }}</span>
+        </div>
+
+        <h4 class="calc-subtitle">Potions (usando so este tipo)</h4>
+        <div class="potion-grid">
+          @for (p of potions(); track p.potion.name) {
+            <div class="potion-card">
+              <span class="potion-name">{{ p.potion.name }}</span>
+              <span class="potion-count">{{ formatNumber(p.count) }} potions</span>
+              <span class="potion-cost">{{ formatNumber(p.cost) }} gp</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

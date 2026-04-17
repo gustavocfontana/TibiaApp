@@ -18,5 +18,13 @@ export const routes: Routes = [
     path: 'worlds',
     loadComponent: () => import('./features/worlds/worlds.component').then(m => m.WorldsComponent)
   },
+  {
+    path: 'calculator',
+    loadComponent: () => import('./features/calculator/calculator.component').then(m => m.CalculatorComponent)
+  },
+  {
+    path: 'worlds/:world',
+    loadComponent: () => import('./features/world-activity/world-activity.component').then(m => m.WorldActivityComponent)
+  },
   { path: '**', redirectTo: 'soul-cores' }
 ];

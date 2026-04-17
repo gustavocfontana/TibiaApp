@@ -33,6 +33,10 @@ export class SidebarComponent {
     { label: 'Worlds', path: '/worlds', icon: 'globe' }
   ];
 
+  readonly tools: NavLink[] = [
+    { label: 'Calculator', path: '/calculator', icon: 'calc' }
+  ];
+
   constructor() {
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed())
