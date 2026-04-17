@@ -43,9 +43,9 @@
 
 <section class="content-area">
   @if (loading()) {
-    <div class="loading"><div class="spinner"></div><p>Carregando worlds...</p></div>
+    <app-loading message="Carregando worlds..." />
   } @else if (error(); as err) {
-    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+    <app-error-state [message]="err" (retry)="load()" />
   } @else {
     <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
       @for (w of filtered(); track w.name) {

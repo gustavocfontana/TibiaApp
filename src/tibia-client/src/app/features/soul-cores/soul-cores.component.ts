@@ -2,6 +2,8 @@ import { Component, computed, inject, signal, ViewChild, ElementRef } from '@ang
 import { SoulCoresService } from './soul-cores.service';
 import { SoulCoreItem, SoulCoresResponse } from './soul-cores.models';
 import { ToastService } from '../../core/toast.service';
+import { LoadingComponent } from '../../core/ui/loading.component';
+import { ErrorStateComponent } from '../../core/ui/error-state.component';
 
 type OwnedFilter = 'all' | 'owned' | 'missing';
 
@@ -11,6 +13,7 @@ const LEGACY_KEY = 'tibiaSoulCores';
 @Component({
   selector: 'app-soul-cores',
   standalone: true,
+  imports: [LoadingComponent, ErrorStateComponent],
   templateUrl: './soul-cores.component.html'
 })
 export class SoulCoresComponent {

@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { SpellsService } from './spells.service';
 import { Spell, SpellsResponse } from './spells.models';
+import { LoadingComponent } from '../../core/ui/loading.component';
+import { ErrorStateComponent } from '../../core/ui/error-state.component';
 
 type GroupFilter = 'all' | 'attack' | 'healing' | 'support';
 type TypeFilter = 'all' | 'instant' | 'rune';
@@ -8,6 +10,7 @@ type TypeFilter = 'all' | 'instant' | 'rune';
 @Component({
   selector: 'app-spells',
   standalone: true,
+  imports: [LoadingComponent, ErrorStateComponent],
   templateUrl: './spells.component.html'
 })
 export class SpellsComponent {

@@ -45,9 +45,9 @@
 
 <section class="content-area">
   @if (loading()) {
-    <div class="loading"><div class="spinner"></div><p>Carregando spells...</p></div>
+    <app-loading message="Carregando spells..." />
   } @else if (error(); as err) {
-    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+    <app-error-state [message]="err" (retry)="load()" />
   } @else {
     <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
       @for (s of filtered(); track s.spellId) {

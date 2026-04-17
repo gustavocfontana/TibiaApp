@@ -2,10 +2,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { HighscoresService } from './highscores.service';
 import { HighscoresResponse } from './highscores.models';
 import { WorldsService } from '../worlds/worlds.service';
+import { LoadingComponent } from '../../core/ui/loading.component';
+import { ErrorStateComponent } from '../../core/ui/error-state.component';
 
 @Component({
   selector: 'app-highscores',
   standalone: true,
+  imports: [LoadingComponent, ErrorStateComponent],
   templateUrl: './highscores.component.html'
 })
 export class HighscoresComponent {

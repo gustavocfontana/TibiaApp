@@ -27,7 +27,7 @@ Todos os dados vem da [TibiaData API](https://tibiadata.com).
 | **ORM** | Entity Framework Core + Npgsql |
 | **Database** | PostgreSQL 16 |
 | **Mediator** | MediatR (CQRS) |
-| **Frontend** | HTML / CSS / JS (SPA com hash routing) |
+| **Frontend** | Angular 21 (standalone components, signals, lazy routes) |
 | **Infra** | Docker Compose (3 servicos) |
 | **Docs** | Swagger / Swashbuckle |
 
@@ -53,9 +53,14 @@ src/
 │   ├── Repositories/             # EF Core repositories
 │   └── ExternalApis/             # TibiaDataService (HttpClient + cache)
 │
-└── TibiaApp.API/                 # Apresentacao
-    ├── Controllers/              # REST endpoints
-    └── Program.cs                # DI, middleware, auto-migration
+├── TibiaApp.API/                 # Apresentacao
+│   ├── Controllers/              # REST endpoints
+│   └── Program.cs                # DI, middleware, auto-migration
+│
+└── tibia-client/                 # Angular 21 SPA
+    ├── src/app/core/             # ApiService, Toast, Loading, ErrorState
+    ├── src/app/layout/           # Sidebar, MobileHeader, SidebarState
+    └── src/app/features/         # soul-cores, highscores, spells, worlds
 ```
 
 **Principios:** SOLID, DRY, KISS, YAGNI — sem over-engineering.
@@ -113,7 +118,7 @@ docker compose down
 - [x] Highscores, Spells, Worlds
 - [x] .NET 9 + Clean Architecture + Vertical Slice
 - [x] PostgreSQL + EF Core + Docker Compose
-- [ ] Migrar frontend para Angular
+- [x] Frontend em Angular 21 (standalone + signals)
 - [ ] Autenticacao com Keycloak
 - [ ] Testes automatizados
 - [ ] CI/CD

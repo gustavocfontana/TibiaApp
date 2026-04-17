@@ -41,9 +41,9 @@
 
 <section class="content-area">
   @if (loading()) {
-    <div class="loading"><div class="spinner"></div><p>Carregando highscores...</p></div>
+    <app-loading message="Carregando highscores..." />
   } @else if (error(); as err) {
-    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+    <app-error-state [message]="err" (retry)="load()" />
   } @else if (entries().length === 0) {
     <div class="no-results"><p>Nenhum resultado.</p></div>
   } @else {

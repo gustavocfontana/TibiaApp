@@ -1,12 +1,15 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { WorldsService } from './worlds.service';
-import { World, WorldsResponse } from './worlds.models';
+import { WorldsResponse } from './worlds.models';
+import { LoadingComponent } from '../../core/ui/loading.component';
+import { ErrorStateComponent } from '../../core/ui/error-state.component';
 
 type PvpFilter = 'all' | 'open' | 'optional' | 'hardcore' | 'retro-open' | 'retro-hardcore';
 
 @Component({
   selector: 'app-worlds',
   standalone: true,
+  imports: [LoadingComponent, ErrorStateComponent],
   templateUrl: './worlds.component.html'
 })
 export class WorldsComponent {
