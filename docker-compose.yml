@@ -34,11 +34,13 @@ services:
 
   tibiaapp-client:
     build:
-      context: .
+      context: ./src/tibia-client
       dockerfile: Dockerfile
     container_name: tibiaapp-client
     ports:
       - "8090:80"
+    depends_on:
+      - tibiaapp-api
     restart: unless-stopped
 
 volumes:
