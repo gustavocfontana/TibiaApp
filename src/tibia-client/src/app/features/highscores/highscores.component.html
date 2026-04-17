@@ -1,0 +1,75 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <h2>Highscores</h2>
+      @if (data(); as d) {
+        <span class="badge">Pag. {{ d.page }}</span>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" type="button" (click)="load()" title="Recarregar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="controls-row">
+    <select class="select-input" [value]="world()" (change)="onWorldChange($event)">
+      @for (w of worlds(); track w) {
+        <option [value]="w">{{ w }}</option>
+      }
+    </select>
+    <select class="select-input" [value]="category()" (change)="onCategoryChange($event)">
+      @for (c of categories; track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+    <select class="select-input" [value]="vocation()" (change)="onVocationChange($event)">
+      @for (v of vocations; track v) {
+        <option [value]="v">{{ v }}</option>
+      }
+    </select>
+    <div class="filter-group">
+      <button class="filter-btn" type="button" [disabled]="page() <= 1" (click)="prevPage()">‹ Anterior</button>
+      <button class="filter-btn" type="button" (click)="nextPage()">Proxima ›</button>
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div><p>Carregando highscores...</p></div>
+  } @else if (error(); as err) {
+    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+  } @else if (entries().length === 0) {
+    <div class="no-results"><p>Nenhum resultado.</p></div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Voc</th>
+          <th>World</th>
+          <th>Nivel</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of entries(); track e.rank) {
+          <tr>
+            <td class="rank-cell" [class]="rankClass(e.rank)">{{ e.rank }}</td>
+            <td class="name-cell">{{ e.name }}</td>
+            <td><span class="vocation-badge" [class]="vocationSlug(e.vocation)">{{ vocationShort(e.vocation) }}</span></td>
+            <td>{{ e.world }}</td>
+            <td>{{ e.level }}</td>
+            <td>{{ e.value.toLocaleString() }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

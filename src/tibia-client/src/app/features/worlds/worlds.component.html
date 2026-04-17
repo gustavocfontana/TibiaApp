@@ -1,0 +1,83 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <h2>Worlds</h2>
+      @if (data(); as d) {
+        <span class="badge">{{ d.playersOnline }} online</span>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" type="button" (click)="load()" title="Recarregar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="controls-row">
+    <div class="search-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="Buscar world..."
+             [value]="search()" (input)="onSearchInput($event)" />
+    </div>
+    <select class="select-input" [value]="region()" (change)="onRegionChange($event)">
+      <option value="all">Todas regioes</option>
+      @for (r of regions(); track r) {
+        <option [value]="r">{{ r }}</option>
+      }
+    </select>
+    <div class="filter-group">
+      @for (opt of pvpOptions; track opt) {
+        <button class="filter-btn"
+                [class.active]="pvp() === opt"
+                type="button"
+                (click)="pvp.set(opt)">{{ opt === 'all' ? 'Todos' : opt }}</button>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div><p>Carregando worlds...</p></div>
+  } @else if (error(); as err) {
+    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+  } @else {
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+      @for (w of filtered(); track w.name) {
+        <div class="world-card">
+          <div class="world-header">
+            <span class="world-name">{{ w.name }}</span>
+            <span class="status-dot" [class.online]="w.status === 'online'" [class.offline]="w.status !== 'online'"></span>
+          </div>
+          <div class="world-details">
+            <div class="world-detail">
+              <span class="world-detail-label">Players</span>
+              <span class="world-detail-value">{{ w.playersOnline }}</span>
+            </div>
+            <div class="world-detail">
+              <span class="world-detail-label">Regiao</span>
+              <span class="world-detail-value">{{ w.location }}</span>
+            </div>
+            <div class="world-detail">
+              <span class="world-detail-label">PvP</span>
+              <span class="pvp-badge" [class]="pvpSlug(w.pvpType)">{{ w.pvpType }}</span>
+            </div>
+            @if (w.battleyeProtected) {
+              <div class="world-detail">
+                <span class="world-detail-label">BattlEye</span>
+                <span class="world-detail-value">Sim</span>
+              </div>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="no-results"><p>Nenhum world encontrado.</p></div>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,76 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <h2>Spells</h2>
+      @if (data(); as d) {
+        <span class="badge">{{ filtered().length }} / {{ d.total }}</span>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" type="button" (click)="load()" title="Recarregar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="controls-row">
+    <div class="search-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="Buscar spell ou formula..."
+             [value]="search()" (input)="onSearchInput($event)" />
+    </div>
+    <div class="filter-group">
+      @for (opt of groupOptions; track opt) {
+        <button class="filter-btn"
+                [class.active]="group() === opt"
+                type="button"
+                (click)="group.set(opt)">{{ opt === 'all' ? 'Grupos' : opt }}</button>
+      }
+    </div>
+    <div class="filter-group">
+      @for (opt of typeOptions; track opt) {
+        <button class="filter-btn"
+                [class.active]="type() === opt"
+                type="button"
+                (click)="type.set(opt)">{{ opt === 'all' ? 'Tipos' : opt }}</button>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div><p>Carregando spells...</p></div>
+  } @else if (error(); as err) {
+    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+  } @else {
+    <div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">
+      @for (s of filtered(); track s.spellId) {
+        <div class="spell-card">
+          <div class="spell-header">
+            <span class="spell-name">{{ s.name }}</span>
+            <span class="spell-type" [class.instant]="s.typeInstant" [class.rune]="s.typeRune">
+              {{ s.typeRune ? 'rune' : 'instant' }}
+            </span>
+          </div>
+          <div class="spell-formula">{{ s.formula || '—' }}</div>
+          <div class="spell-meta">
+            <span class="spell-stat"><strong>Lv</strong> {{ s.level }}</span>
+            <span class="spell-stat"><strong>Mana</strong> {{ s.mana }}</span>
+            <span class="spell-group" [class]="groupOf(s)">{{ groupOf(s) }}</span>
+            @if (s.premiumOnly) {
+              <span class="spell-stat"><strong>Premium</strong></span>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="no-results"><p>Nenhuma spell encontrada.</p></div>
+      }
+    </div>
+  }
+</section>
