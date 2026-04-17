@@ -4,6 +4,7 @@ import {
   experienceBetween, experienceForLevel, hoursToLevel,
   hitsNeeded, manaForMagicLevel, breakdownPotions
 } from './calculator.formulas';
+import { vocationSprite, weaponSprite, potionSprite } from '../../core/tibia-assets';
 
 type Tab = 'experience' | 'skills' | 'magic';
 
@@ -49,6 +50,10 @@ export class CalculatorComponent {
   ));
 
   readonly potions = computed(() => breakdownPotions(this.manaTotal()));
+
+  readonly vocationSprite = vocationSprite;
+  readonly weaponSprite = weaponSprite;
+  readonly potionSprite = potionSprite;
 
   setTab(t: Tab): void { this.tab.set(t); }
 

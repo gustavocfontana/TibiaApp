@@ -53,6 +53,7 @@
       @for (s of filtered(); track s.spellId) {
         <div class="spell-card">
           <div class="spell-header">
+            <img class="spell-sprite" [src]="spriteFor(s)" alt="" loading="lazy" />
             <span class="spell-name">{{ s.name }}</span>
             <span class="spell-type" [class.instant]="s.typeInstant" [class.rune]="s.typeRune">
               {{ s.typeRune ? 'rune' : 'instant' }}

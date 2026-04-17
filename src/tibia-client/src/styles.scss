@@ -446,6 +446,19 @@ body {
     font-weight: 600;
 }
 
+.voc-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.voc-sprite {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+}
+
 .vocation-badge.ek { background: rgba(225, 112, 85, 0.15); color: #e17055; }
 .vocation-badge.rp { background: rgba(0, 184, 148, 0.15); color: #00b894; }
 .vocation-badge.ms { background: rgba(108, 92, 231, 0.15); color: #a29bfe; }
@@ -463,8 +476,9 @@ body {
 
 .spell-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-1px); }
 
-.spell-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.spell-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+.spell-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.spell-sprite { width: 24px; height: 24px; image-rendering: pixelated; flex-shrink: 0; }
+.spell-name { flex: 1; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
 
 .spell-type {
     font-size: 0.65rem;

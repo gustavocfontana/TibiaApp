@@ -3,6 +3,7 @@ import { SpellsService } from './spells.service';
 import { Spell, SpellsResponse } from './spells.models';
 import { LoadingComponent } from '../../core/ui/loading.component';
 import { ErrorStateComponent } from '../../core/ui/error-state.component';
+import { spellGroupSprite, spellTypeSprite } from '../../core/tibia-assets';
 
 type GroupFilter = 'all' | 'attack' | 'healing' | 'support';
 type TypeFilter = 'all' | 'instant' | 'rune';
@@ -60,6 +61,14 @@ export class SpellsComponent {
         this.loading.set(false);
       }
     });
+  }
+
+  spriteFor(s: Spell): string {
+    const group = this.groupOf(s);
+    if (group === 'attack') return spellGroupSprite.attack;
+    if (group === 'healing') return spellGroupSprite.healing;
+    if (group === 'support') return spellGroupSprite.support;
+    return s.typeRune ? spellTypeSprite.rune : spellTypeSprite.instant;
   }
 
   groupOf(s: Spell): GroupFilter {

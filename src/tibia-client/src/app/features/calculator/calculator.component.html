@@ -88,9 +88,13 @@
 
       <div class="calc-card highlight">
         <h3 class="calc-title">Resultado</h3>
-        <div class="metric big">
-          <span class="metric-label">Hits necessarios</span>
-          <span class="metric-value">{{ formatNumber(skillHits()) }}</span>
+        <div class="result-with-sprite">
+          <img class="sprite sprite-lg" [src]="vocationSprite(skillVocation())" alt="" loading="lazy" />
+          <img class="sprite sprite-lg" [src]="weaponSprite(skillKind())" alt="" loading="lazy" />
+          <div class="metric big grow">
+            <span class="metric-label">Hits necessarios</span>
+            <span class="metric-value">{{ formatNumber(skillHits()) }}</span>
+          </div>
         </div>
         <p class="calc-note">
           Cada hit conta como 1 tentativa. Valores baseados nas formulas conhecidas da comunidade —
@@ -126,18 +130,24 @@
 
       <div class="calc-card highlight">
         <h3 class="calc-title">Resultado</h3>
-        <div class="metric big">
-          <span class="metric-label">Mana total necessaria</span>
-          <span class="metric-value">{{ formatNumber(manaTotal()) }}</span>
+        <div class="result-with-sprite">
+          <img class="sprite sprite-lg" [src]="vocationSprite(mlVocation())" alt="" loading="lazy" />
+          <div class="metric big grow">
+            <span class="metric-label">Mana total necessaria</span>
+            <span class="metric-value">{{ formatNumber(manaTotal()) }}</span>
+          </div>
         </div>
 
         <h4 class="calc-subtitle">Potions (usando so este tipo)</h4>
         <div class="potion-grid">
           @for (p of potions(); track p.potion.name) {
             <div class="potion-card">
-              <span class="potion-name">{{ p.potion.name }}</span>
-              <span class="potion-count">{{ formatNumber(p.count) }} potions</span>
-              <span class="potion-cost">{{ formatNumber(p.cost) }} gp</span>
+              <img class="sprite" [src]="potionSprite(p.potion.name)" alt="" loading="lazy" />
+              <div class="potion-info">
+                <span class="potion-name">{{ p.potion.name }}</span>
+                <span class="potion-count">{{ formatNumber(p.count) }} potions</span>
+                <span class="potion-cost">{{ formatNumber(p.cost) }} gp</span>
+              </div>
             </div>
           }
         </div>

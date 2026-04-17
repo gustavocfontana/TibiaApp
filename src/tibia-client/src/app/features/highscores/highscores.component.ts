@@ -4,6 +4,7 @@ import { HighscoresResponse } from './highscores.models';
 import { WorldsService } from '../worlds/worlds.service';
 import { LoadingComponent } from '../../core/ui/loading.component';
 import { ErrorStateComponent } from '../../core/ui/error-state.component';
+import { vocationSprite } from '../../core/tibia-assets';
 
 @Component({
   selector: 'app-highscores',
@@ -72,6 +73,8 @@ export class HighscoresComponent {
     this.page.update(p => p + 1);
     this.load();
   }
+
+  readonly vocationSprite = vocationSprite;
 
   rankClass(rank: number): string {
     if (rank === 1) return 'gold';

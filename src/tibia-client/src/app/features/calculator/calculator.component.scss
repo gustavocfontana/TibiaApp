@@ -163,10 +163,30 @@
   gap: 10px;
 }
 
+.sprite {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.sprite-lg {
+  width: 56px;
+  height: 56px;
+}
+
+.result-with-sprite {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  .grow { flex: 1; }
+}
+
 .potion-card {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 12px;
   padding: 12px 14px;
   background: var(--bg-input);
   border: 1px solid var(--border);
@@ -174,6 +194,13 @@
   transition: border-color 0.15s ease;
 
   &:hover { border-color: var(--border-hover); }
+
+  .potion-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
 
   .potion-name {
     font-size: 0.85rem;

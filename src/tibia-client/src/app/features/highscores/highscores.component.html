@@ -63,7 +63,10 @@
           <tr>
             <td class="rank-cell" [class]="rankClass(e.rank)">{{ e.rank }}</td>
             <td class="name-cell">{{ e.name }}</td>
-            <td><span class="vocation-badge" [class]="vocationSlug(e.vocation)">{{ vocationShort(e.vocation) }}</span></td>
+            <td class="voc-cell">
+              <img class="voc-sprite" [src]="vocationSprite(e.vocation)" alt="" loading="lazy" />
+              <span class="vocation-badge" [class]="vocationSlug(e.vocation)">{{ vocationShort(e.vocation) }}</span>
+            </td>
             <td>{{ e.world }}</td>
             <td>{{ e.level }}</td>
             <td>{{ e.value.toLocaleString() }}</td>
