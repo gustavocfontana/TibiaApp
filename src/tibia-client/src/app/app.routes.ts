@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
-import { PlaceholderComponent } from './features/placeholder/placeholder.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'soul-cores' },
-  { path: 'soul-cores', component: PlaceholderComponent, data: { title: 'Soul Cores' } },
+  {
+    path: 'soul-cores',
+    loadComponent: () => import('./features/soul-cores/soul-cores.component').then(m => m.SoulCoresComponent)
+  },
   {
     path: 'highscores',
     loadComponent: () => import('./features/highscores/highscores.component').then(m => m.HighscoresComponent)

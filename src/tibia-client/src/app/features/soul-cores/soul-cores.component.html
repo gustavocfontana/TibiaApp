@@ -1,0 +1,110 @@
+<section class="page-header">
+  <div class="page-header-top">
+    <div class="page-title">
+      <h2>Soul Cores</h2>
+      @if (data(); as d) {
+        <span class="badge">{{ d.owned }} / {{ d.total }}</span>
+      }
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" type="button" (click)="load()" title="Recarregar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      </button>
+      <button class="btn-icon" type="button" (click)="export()" title="Exportar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </button>
+      <button class="btn-icon" type="button" (click)="triggerImport()" title="Importar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </button>
+      <button class="btn-icon danger" type="button" (click)="reset()" title="Resetar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+        </svg>
+      </button>
+      <input #fileInput type="file" accept="application/json" (change)="onFileSelected($event)" hidden />
+    </div>
+  </div>
+
+  @if (data(); as d) {
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 4 6v6c0 5 3.5 9.5 8 10 4.5-.5 8-5 8-10V6l-8-4z"/>
+          </svg>
+        </div>
+        <div class="stat-info"><span class="stat-value">{{ d.total }}</span><span class="stat-label">Total</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="stat-info"><span class="stat-value">{{ d.owned }}</span><span class="stat-label">Obtidos</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="stat-info"><span class="stat-value">{{ d.missing }}</span><span class="stat-label">Faltando</span></div>
+      </div>
+    </div>
+
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" [style.width.%]="progress()"></div></div>
+      <span class="progress-label">{{ progress() }}%</span>
+    </div>
+  }
+
+  <div class="controls-row">
+    <div class="search-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input class="search-input" type="text" placeholder="Buscar criatura..."
+             [value]="search()" (input)="onSearchInput($event)" />
+    </div>
+    <div class="filter-group">
+      @for (opt of filterOptions; track opt) {
+        <button class="filter-btn"
+                [class.active]="filter() === opt"
+                type="button"
+                (click)="filter.set(opt)">{{ opt === 'all' ? 'Todos' : (opt === 'owned' ? 'Obtidos' : 'Faltando') }}</button>
+      }
+    </div>
+  </div>
+</section>
+
+<section class="content-area">
+  @if (loading()) {
+    <div class="loading"><div class="spinner"></div><p>Carregando soul cores...</p></div>
+  } @else if (error(); as err) {
+    <div class="error-state"><p>{{ err }}</p><button class="btn-retry" type="button" (click)="load()">Tentar novamente</button></div>
+  } @else {
+    <div class="grid">
+      @for (c of filtered(); track c.race) {
+        <div class="creature-card" [class.owned]="c.owned" (click)="toggle(c)">
+          <div class="check-box">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="3"/></svg>
+          </div>
+          @if (c.imageUrl) {
+            <img class="creature-img" [src]="c.imageUrl" [alt]="c.name" loading="lazy" />
+          }
+          <span class="creature-name">{{ c.name }}</span>
+        </div>
+      } @empty {
+        <div class="no-results"><p>Nenhuma criatura encontrada.</p></div>
+      }
+    </div>
+  }
+</section>
